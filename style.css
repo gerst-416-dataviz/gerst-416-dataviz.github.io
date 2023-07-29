@@ -56,3 +56,6 @@ footer {
     font-size: 3em;
 }
 
+button {
+    cursor: pointer;
+}

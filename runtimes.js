@@ -7,24 +7,28 @@ var ALL_DATA = 0;
 
 var graphW = screen.width * 1200 / 1920;
 var graphH = screen.height * 700 / 1080;
-var m = {t: 20, b: 50, l: 75, r: 20};
+var m = {t: 20, b: 50, l: 80, r: 20};
 
 var svg = 0;
 
+// Runtime ranged from 18 to 776 mins for 1K votes,
+//  45 to 566 mins for 5K votes,
+//  45 to 467 mins for 10K votes
+
 var x = d3.scaleLinear()
     .domain([1910, 2024])
-    .range([0, graphW]);
+    .range([0, graphW])
 
-var y = d3.scaleLinear()
-    .domain([0, 10])
-    .range([graphH, 0]);
+var y = d3.scaleLog()
+    .domain([40, 600])
+    .range([graphH, 0])
     
 // Max votes was 2773389
 var rad = d3.scaleLog()
-    .domain([1000, 3000000])
+    .domain([5000, 3000000])
     .range([1, 8]);
 
-PHASE2_MIN_VOTES = 40000
+PHASE2_MIN_VOTES = 60000
 var rad2 = d3.scaleLog()
     .domain([PHASE2_MIN_VOTES, 3000000])
     .range([1, 8]);
@@ -52,59 +56,59 @@ function showGraph() {
         .text("Release Year");
 
     svg.append("g")
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(y).tickValues([60,80,100,120,150,180,240,300,360,420,480,540,600]))
         .append("text")
         .attr("fill", "black") // set the fill here
-        .attr("transform", "rotate(-90) translate(" + -(graphH / 2 - 100) + ", -40)")
+        .attr("transform", "rotate(-90) translate(" + -(graphH / 2 - 100) + ", -45)")
         .attr("font-size", "2em")
-        .text("Average User Rating");
+        .text("Runtime (minutes)");
 
     d3.selectAll(".tick > text").style("font-size", function(d) { return "1.5em"; });
 
     d3.tsv("https://gerst-416-dataviz.github.io/mergedData.tsv").then(data => {
         // Sort with most votes first
         data = data.toSorted((a, b) => b.numVotes - a.numVotes);
+        data = data.filter(d => d.numVotes >= 5000);
         ALL_DATA = data;
-        //data = data.filter(d => d.numVotes >= 50000);
 
         console.log(data.length);
         
         const annotations = [
           {
             note: {
-              title: "Peter Pan (1924)",
-              label: "Average Rating: 7.1\tNumber of Ratings: 1,189\tRuntime: 105 minutes",
-              align: "middle",  // try right or left
-              wrap: 200,  // try something smaller to see text split in several lines
-              padding: 10,   // More = text lower
-              wrapSplitter: "\t"
-            },
-            color: ["navy"],
-            x: x(1924),
-            y: y(7.1),
-            dy: 250,
-            dx: -20,
-            type: d3.annotationCalloutCircle,
-            connector: { end: "arrow" },
-            subject: { radius: 5, radiusPadding: 0 },
-          },
-          {
-            note: {
-              title: "Invasion of the Neptune Men (1961)",
-              label: "Average Rating: 2.1\tNumber of Ratings: 2,813\tRuntime: 75 minutes",
+              title: "Shoah (1985)",
+              label: "Average Rating: 8.7\tNumber of Ratings: 9,972\tRuntime: 566 minutes",
               align: "right",  // try right or left
               wrap: 200,  // try something smaller to see text split in several lines
               padding: 10,   // More = text lower
               wrapSplitter: "\t"
             },
             color: ["navy"],
-            x: x(1961),
-            y: y(2.1),
-            dy: 30,
-            dx: -160,
+            x: x(1985),
+            y: y(566),
+            dy: 80,
+            dx: -120,
             type: d3.annotationCalloutCircle,
             connector: { end: "arrow" },
             subject: { radius: 5, radiusPadding: 0 },
+          },
+          {
+            note: {
+              title: "Sherlock Jr. (1924)",
+              label: "Average Rating: 8.2\tNumber of Ratings: 53,294\tRuntime: 45 minutes",
+              align: "left",  // try right or left
+              wrap: 200,  // try something smaller to see text split in several lines
+              padding: 10,   // More = text lower
+              wrapSplitter: "\t"
+            },
+            color: ["navy"],
+            x: x(1924),
+            y: y(45),
+            dy: -450,
+            dx: 60,
+            type: d3.annotationCalloutCircle,
+            connector: { end: "arrow" },
+            subject: { radius: 8, radiusPadding: 0 },
           }
         ];
         const makeAnnotations = d3.annotation().annotations(annotations);
@@ -116,7 +120,7 @@ function showGraph() {
             .append("circle")
             .on("mouseover", (d, i) => {console.log(d, i)})
             .attr("cx", d => x(d.startYear))
-            .attr("cy", d => y(d.averageRating))
+            .attr("cy", d => y(d.runtimeMinutes))
             //.attr("r", d => rad(d.numVotes))
             .attr("r", 0)
             .style("stroke", "red")
@@ -141,10 +145,11 @@ function graphPhase2() {
     console.log(data.length);
 
     var newText = document.createElement("span");
-    newText.innerHTML = "Now, we can filter the data down to include only movies with at least " + PHASE2_MIN_VOTES.toLocaleString()
-        + " user ratings on IMDb, which leaves us with " + data.length.toLocaleString() + " entries remaining.<br><br>"
-        + "After that, we resize the circles to take into account the new range and make it easier to read. It may still be a bit too much data to find any useful patterns.<br><br>"
-        + "Unfortunately, we are beginning to see the start of a worrying trend in the dataset. Namely, the vast majority of movies with many user ratings are very recent.";
+    newText.innerHTML = "We can use the same filtering technique as before. Using our experience from the last chart, we choose to set the threshold to a minimum of " + PHASE2_MIN_VOTES.toLocaleString()
+        + " user ratings, leaving us with " + data.length.toLocaleString() + " movies, and we rescale the circles to fit.<br><br>"
+        + "Finally, we have something promising. There is a decent density of movies, both old and new, and we can see that for every year shown, the vast majority of movies tend to fit into a very narrow range of runtimes.<br><br>"
+        + "We have a few outliers, like <i>5 Centimeters Per Second</i> (2007) and <i>Gangs of Wasseypur</i> (2012) at 63 and 321 minutes, respectively, but nearly every other movie shown falls somewhere between 80 and 180 minutes. "
+        + "Within this range, the spread is fairly uniform over time, appearing neither to increase or decrease as the years progress.";
 
     newText.style.opacity = 0;
     contButton.style.opacity = 0;
@@ -184,17 +189,17 @@ function graphPhase2() {
     const annotations = [
           {
             note: {
-              title: "Howard the Duck (1986)",
-              label: "Average Rating: 4.7\tNumber of Ratings: 49,324\tRuntime: 110 minutes",
-              align: "middle",  // try right or left
+              title: "5 Centimeters Per Second (2007)",
+              label: "Average Rating: 7.5\tNumber of Ratings: 61,244\tRuntime: 63 minutes",
+              align: "right",  // try right or left
               wrap: 200,  // try something smaller to see text split in several lines
               padding: 10,   // More = text lower
               wrapSplitter: "\t"
             },
             color: ["navy"],
-            x: x(1986),
-            y: y(4.7),
-            dy: 150,
+            x: x(2007),
+            y: y(63),
+            dy: 20,
             dx: -120,
             type: d3.annotationCalloutCircle,
             connector: { end: "arrow" },
@@ -202,18 +207,18 @@ function graphPhase2() {
           },
           {
             note: {
-              title: "It's a Wonderful Life (1946)",
-              label: "Average Rating: 8.6\tNumber of Ratings: 475,678\tRuntime: 130 minutes",
-              align: "middle",  // try right or left
+              title: "Gangs of Wasseypur (2012)",
+              label: "Average Rating: 8.2\tNumber of Ratings: 99,991\tRuntime: 321 minutes",
+              align: "right",  // try right or left
               wrap: 250,  // try something smaller to see text split in several lines
               padding: 10,   // More = text lower
               wrapSplitter: "\t"
             },
             color: ["navy"],
-            x: x(1946),
-            y: y(8.6),
-            dy: 150,
-            dx: -80,
+            x: x(2012),
+            y: y(321),
+            dy: -50,
+            dx: -120,
             type: d3.annotationCalloutCircle,
             connector: { end: "arrow" },
             subject: { radius: 10, radiusPadding: 0 },
@@ -226,6 +231,27 @@ function graphPhase2() {
         .delay(2000)
         .duration(1000)
         .style("opacity", 1);
+
+    lines = svg.append("g")
+    lines.append("line")
+        .attr("x1", x.range()[0])
+        .attr("x2", x.range()[1])
+        .attr("y1", y(180))
+        .attr("y2", y(180))
+        .style("stroke", "black")
+        .style("stroke-dasharray", "0 25 0")
+    lines.append("line")
+        .attr("x1", x.range()[0])
+        .attr("x2", x.range()[1])
+        .attr("y1", y(80))
+        .attr("y2", y(80))
+        .style("stroke", "black")
+        .style("stroke-dasharray", "0 25 0")
+    lines.style("opacity", 0)
+        .transition()
+        .delay(2000)
+        .duration(1000)
+        .style("opacity", .5);
 }
 
 function graphPhase3() {
@@ -239,14 +265,14 @@ function graphPhase3() {
     console.log(data.length);
 
     var newText = document.createElement("span");
-    newText.innerHTML = "Here, we've filtered to include only movies with at least " + PHASE3_MIN_VOTES.toLocaleString()
-        + " ratings on IMDb, which now leaves us with " + data.length.toLocaleString() + " entries.<br><br>"
-        + "The concerning trend we noted before is now even more visible. Why might this happen?<br><br>"
-        + "Well, it makes sense intuitively. Older movies like <i>Peter Pan</i> (1924) came long before the age of IMDb, and are far older than almost any user of the website. The number of new viewers of such movies pales in comparison to the number watching new films."
-        + "This holds especially true for movies like <i>Invasion of the Neptune Men</i> (1961), with an average user rating of only 2.1/10.<br><br>"
-        + "Notably, the old movies that have many reviews tend to be only classics like <i>It's a Wonderful Life</i> (1946) and <i>A Clockwork Orange</i> (1971), whereas movies from the past couple decades like <i>Fifty Shades of Grey</i> (2015) can receive more than 300,000 ratings despite abysmal scores.<br><br>"
-        + "Sadly, it would seem that we've reached a dead end; IMDb has such a recency bias in terms of number of ratings that it makes it impossible to draw meaningful comparisons across the years.<br><br>"
-        + "What if we try looking at runtime instead of ratings?";
+    newText.innerHTML = "Let's check once again with a minimum threshold of " + PHASE3_MIN_VOTES.toLocaleString()
+        + " ratings.<br><br>"
+        + "When we filter the data like this, the observation we made before appears to hold!<br><br>"
+        + "Once again, the movies in each decade are spread across the range of about 80 to 180 minutes, with only a select few falling outside of those bounds."
+        + "In fact, we tend to have even fewer outliers as the minimum vote threshold increases, suggesting that movies in this range are more popular (among IMDb users, at least).<br><br>"
+        + "Perhaps we could not reach a conclusion on whether movie quality (as measured by user ratings) has changed over time, but when it comes to runtime, we can say confidently that "
+        + "runtimes of popular movies have not had any noticeable upward or downward trends over the decades!<br><br>"
+        + "Let's move on to some more free-form exploration...";
 
     newText.style.opacity = 0;
     contButton.style.opacity = 0;
@@ -254,7 +280,7 @@ function graphPhase3() {
     contButton.style.transition = "1s all";
 
     expBox.appendChild(newText);
-    contButton.onclick = () => { window.location.href = "runtimes.html" };
+    contButton.onclick = () => { window.location.href = "explore.html" };
     expBox.appendChild(contButton);
     expBox.scrollTo(0, expBox.scrollHeight);
 
@@ -286,39 +312,39 @@ function graphPhase3() {
     const annotations = [
           {
             note: {
-              title: "Fifty Shades of Grey (2015)",
-              label: "Average Rating: 4.2\tNumber of Ratings: 327,754\tRuntime: 125 minutes",
-              align: "middle",  // try right or left
+              title: "Zack Snyder's Justice League (2021)",
+              label: "Average Rating: 7.9\tNumber of Ratings: 419,340\tRuntime: 242 minutes",
+              align: "right",  // try right or left
               wrap: 200,  // try something smaller to see text split in several lines
               padding: 10,   // More = text lower
               wrapSplitter: "\t"
             },
             color: ["navy"],
-            x: x(2015),
-            y: y(4.2),
-            dy: 150,
+            x: x(2021),
+            y: y(242),
+            dy: -80,
             dx: -120,
             type: d3.annotationCalloutCircle,
             connector: { end: "arrow" },
-            subject: { radius: 5, radiusPadding: 0 },
+            subject: { radius: 8, radiusPadding: 0 },
           },
           {
             note: {
-              title: "A Clockwork Orange (1971)",
-              label: "Average Rating: 8.3\tNumber of Ratings: 853,828\tRuntime: 136 minutes",
-              align: "middle",  // try right or left
+              title: "Cinderella (1950)",
+              label: "Average Rating: 7.3\tNumber of Ratings: 167,896\tRuntime: 74 minutes",
+              align: "right",  // try right or left
               wrap: 250,  // try something smaller to see text split in several lines
               padding: 10,   // More = text lower
               wrapSplitter: "\t"
             },
             color: ["navy"],
-            x: x(1971),
-            y: y(8.3),
-            dy: 150,
+            x: x(1950),
+            y: y(74),
+            dy: 50,
             dx: -80,
             type: d3.annotationCalloutCircle,
             connector: { end: "arrow" },
-            subject: { radius: 10, radiusPadding: 0 },
+            subject: { radius: 5, radiusPadding: 0 },
           }
         ];
     const makeAnnotations = d3.annotation().annotations(annotations);

@@ -22,6 +22,8 @@ for line in lines2:
 
 print("maxVotes = " + str(maxVotes))
 
+minRuntime = 1000
+maxRuntime = 0
 with open("mergedData.tsv", "w", encoding="utf-8") as file:
     for line in lines:
         c = line.split("\t")
@@ -36,5 +38,10 @@ with open("mergedData.tsv", "w", encoding="utf-8") as file:
             if all(x != "\\N" for x in used):
                 if tconst in ratingsDict:
                     file.write("\t".join([*used, *ratingsDict[tconst]]) + "\n")
+                    if rm != "runtimeMinutes":
+                        minRuntime = min(minRuntime, int(rm))
+                        maxRuntime = max(maxRuntime, int(rm))
+print("minRuntime = " + str(minRuntime))
+print("minRuntime = " + str(maxRuntime))
 
 print("Finished writing new file.")
