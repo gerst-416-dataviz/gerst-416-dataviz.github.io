@@ -1,0 +1,47 @@
+
+* {
+    font-family: sans-serif;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header, footer {
+    height: 6vh;
+    width: 100vw;
+    background-color: #333;
+    color: white;
+    padding: 1em;
+    font-size: 1.2em;
+    box-sizing: border-box;
+}
+
+header a, footer a {
+    color: white;
+}
+
+header {
+}
+
+#main {
+    flex-grow: 1;
+    padding: 1em;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+footer {
+}
+
+.niceButton {
+    font-size: 3em;
+    padding: 1em;
+    border-radius: .5em;
+    font-style: italic;
+    background-color: #eff;
+}
+

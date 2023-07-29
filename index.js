@@ -1,2 +1,7 @@
 
-alert("hello world!");
+//alert("hello world!");
+
+function startDataViz() {
+
+
+}
