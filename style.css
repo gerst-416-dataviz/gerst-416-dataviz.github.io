@@ -50,7 +50,7 @@ footer {
     transition: all .5s;
 }
 
-#centered span {
+#centered > span {
     display: block;
     margin: .5em;
     font-size: 3em;

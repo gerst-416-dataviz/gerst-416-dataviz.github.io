@@ -1,0 +1,26 @@
+
+#explainBox1 {
+    text-align: left;
+    padding: 2em;
+}
+
+#explainBox1 > * {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.continueButton {
+    margin: auto;
+    border-radius: .5em;
+    font-size: 1.5em;
+    border: none;
+    padding: .5em;
+}
+
+.continueButton:hover {
+    filter: brightness(.9)
+}
+
+center {
+    display: flex;
+}

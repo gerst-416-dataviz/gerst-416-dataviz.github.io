@@ -12,11 +12,15 @@ with open("ratings.tsv.rawdata", "r", encoding="utf-8") as file:
 
 print("Finished reading file 2.")
 
+maxVotes = 0
 ratingsDict = dict()
 for line in lines2:
     c = line.strip().split("\t")
     if c[2] == "numVotes" or int(c[2]) > MIN_VOTES:
+        if c[2] != "numVotes": maxVotes = max(maxVotes, int(c[2]))
         ratingsDict[c[0]] = (c[1], c[2])
+
+print("maxVotes = " + str(maxVotes))
 
 with open("mergedData.tsv", "w", encoding="utf-8") as file:
     for line in lines:
