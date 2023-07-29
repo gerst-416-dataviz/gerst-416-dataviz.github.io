@@ -1,3 +1,5 @@
+MIN_VOTES = 1000
+
 print("About to read file.")
 
 with open("basics.tsv.rawdata", "r", encoding="utf-8") as file:
@@ -13,7 +15,8 @@ print("Finished reading file 2.")
 ratingsDict = dict()
 for line in lines2:
     c = line.strip().split("\t")
-    ratingsDict[c[0]] = (c[1], c[2])
+    if c[2] == "numVotes" or int(c[2]) > MIN_VOTES:
+        ratingsDict[c[0]] = (c[1], c[2])
 
 with open("mergedData.tsv", "w", encoding="utf-8") as file:
     for line in lines:

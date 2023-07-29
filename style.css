@@ -39,9 +39,20 @@ footer {
 
 .niceButton {
     font-size: 3em;
-    padding: 1em;
+    padding: .5em;
     border-radius: .5em;
     font-style: italic;
     background-color: #eff;
+}
+
+#startButton {
+    opacity: 1;
+    transition: all .5s;
+}
+
+#centered span {
+    display: block;
+    margin: .5em;
+    font-size: 3em;
 }
 
