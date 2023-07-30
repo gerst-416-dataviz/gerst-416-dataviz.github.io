@@ -6,8 +6,9 @@ window.addEventListener('load', function() {
   baseGraph2();
   makeGenresList();
   populateData();
-  alert("You now have the opportunity to explore the graphs freely!"
-    + "\nHover over the points to view tooltips, and change the parameters on the right to filter by the genre or number of user ratings.");
+  setTimeout(function() {
+      alert("You now have the opportunity to explore the graphs freely!"
+      + "\nHover over the points to view tooltips, and change the parameters on the right to filter by the genre or number of user ratings.")}, 1000);
 });
 
 function makeGenresList() {

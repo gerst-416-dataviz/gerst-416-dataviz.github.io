@@ -153,7 +153,7 @@ function graphPhase2() {
     newText.innerHTML = "We can use the same filtering technique as before. Using our experience from the last chart, we choose to set the threshold to a minimum of " + PHASE2_MIN_VOTES.toLocaleString()
         + " user ratings, leaving us with " + data.length.toLocaleString() + " movies, and we rescale the circles to fit.<br><br>"
         + "Finally, we have something promising. There is a decent density of movies, both old and new, and we can see that for every year shown, the vast majority of movies tend to fit into a very narrow range of runtimes.<br><br>"
-        + "We have a few outliers, like <i>5 Centimeters Per Second</i> (2007) and <i>Gangs of Wasseypur</i> (2012) at 63 and 321 minutes, respectively, but nearly every other movie shown falls somewhere between 80 and 180 minutes. "
+        + "We have a few outliers, like <i>5 Centimeters Per Second</i> (2007) and <i>Gangs of Wasseypur</i> (2012) at 63 and 321 minutes, respectively, but nearly every other movie shown falls somewhere between 80 and 180 minutes (marked here with dashed lines). "
         + "Within this range, the spread is fairly uniform over time, with typical runtime appearing neither to increase or decrease as the years progress.";
 
     newText.style.opacity = 0;
