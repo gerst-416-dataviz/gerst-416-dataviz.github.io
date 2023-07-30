@@ -160,6 +160,7 @@ function graphPhase2() {
     contButton.style.opacity = 0;
     newText.style.transition = "1s all";
     contButton.style.transition = "1s all";
+    expBox.childNodes.forEach(e => { try { e.style.transition = "0s all" ; e.style.opacity = .5 } catch {} });
 
     expBox.appendChild(newText);
     contButton.onclick = () => { graphPhase3() };
@@ -283,6 +284,7 @@ function graphPhase3() {
     contButton.style.opacity = 0;
     newText.style.transition = "1s all";
     contButton.style.transition = "1s all";
+    expBox.childNodes.forEach(e => { try { e.style.transition = "0s all" ; e.style.opacity = .5 } catch {} });
 
     expBox.appendChild(newText);
     contButton.onclick = () => { window.location.href = "explore.html" };
