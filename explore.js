@@ -45,6 +45,8 @@ var m = {t: 20, b: 50, l: 80, r: 20};
 
 var svg1 = 0;
 var svg2 = 0;
+var circleg1 = 0;
+var circleg2 = 0;
 
 // Runtime ranged from 18 to 776 mins for 1K votes,
 //  45 to 566 mins for 5K votes,
@@ -90,6 +92,8 @@ function baseGraph1() {
         .attr("font-size", "2em")
         .text("Average User Rating");
 
+    circleg1 = svg1.append("g");
+
     d3.selectAll("#graph .tick > text").style("font-size", function(d) { return "1.5em"; });
 }
 
@@ -117,6 +121,8 @@ function baseGraph2() {
         .attr("transform", "rotate(-90) translate(" + -(graphH / 2 - 100) + ", -45)")
         .attr("font-size", "2em")
         .text("Runtime (minutes)");
+
+    circleg2 = svg2.append("g");
 
     d3.selectAll("#graph2 .tick > text").style("font-size", function(d) { return "1.5em"; });
 }
@@ -160,14 +166,11 @@ function renderGraphs() {
         .domain([minVotesFound, maxVotesFound])
         .range([1, 8]);
     console.log(data);
-    
-    svg1.selectAll("circle").remove()
-    svg2.selectAll("circle").remove()
 
-    svg1.append("g")
-        .selectAll("circle")
-        .data(data)
-        .enter()
+    join1 = circleg1 .selectAll("circle")
+        .data(data, d => d.tconst)
+    
+    join1.enter()
         .append("circle")
         .on("mousemove", (d, i) => {makeTooltip(d, i)})
         .on("mouseleave", (d, i) => {destroyTooltip()})
@@ -181,21 +184,46 @@ function renderGraphs() {
         .transition()
         .duration(1000)
         //.style("opacity", 1);
-        .attr("r", d => {if (rad(d.numVotes) < 0) console.log(d); return rad(d.numVotes)});
+        .attr("r", d => rad(d.numVotes))
 
-    svg2.append("g")
-        .selectAll("circle")
-        .data(data)
-        .enter()
+    join1
+        .transition()
+        .duration(1000)
+        .attr("r", d => rad(d.numVotes))
+
+    join1.exit()
+        .transition()
+        .duration(1000)
+        .style("opacity", 0)
+        .remove();
+
+    join2 = circleg2 .selectAll("circle")
+        .data(data, d => d.tconst)
+    
+    join2.enter()
         .append("circle")
         .on("mousemove", (d, i) => {makeTooltip(d, i)})
         .on("mouseleave", (d, i) => {destroyTooltip()})
         .attr("cx", d => x(d.startYear))
         .attr("cy", d => y2(d.runtimeMinutes))
+        //.attr("r", d => rad(d.numVotes))
         .attr("r", 0)
         .style("stroke", "red")
         .style("fill", "transparent")
+        //.style("opacity", 0)
         .transition()
         .duration(1000)
-        .attr("r", d => rad(d.numVotes));
+        //.style("opacity", 1);
+        .attr("r", d => rad(d.numVotes))
+
+    join2
+        .transition()
+        .duration(1000)
+        .attr("r", d => rad(d.numVotes))
+
+    join2.exit()
+        .transition()
+        .duration(1000)
+        .style("opacity", 0)
+        .remove();
 }
