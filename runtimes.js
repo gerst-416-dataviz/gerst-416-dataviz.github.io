@@ -154,7 +154,7 @@ function graphPhase2() {
         + " user ratings, leaving us with " + data.length.toLocaleString() + " movies, and we rescale the circles to fit.<br><br>"
         + "Finally, we have something promising. There is a decent density of movies, both old and new, and we can see that for every year shown, the vast majority of movies tend to fit into a very narrow range of runtimes.<br><br>"
         + "We have a few outliers, like <i>5 Centimeters Per Second</i> (2007) and <i>Gangs of Wasseypur</i> (2012) at 63 and 321 minutes, respectively, but nearly every other movie shown falls somewhere between 80 and 180 minutes. "
-        + "Within this range, the spread is fairly uniform over time, appearing neither to increase or decrease as the years progress.";
+        + "Within this range, the spread is fairly uniform over time, with typical runtime appearing neither to increase or decrease as the years progress.";
 
     newText.style.opacity = 0;
     contButton.style.opacity = 0;
@@ -273,7 +273,7 @@ function graphPhase3() {
     newText.innerHTML = "Let's check once again with a minimum threshold of " + PHASE3_MIN_VOTES.toLocaleString()
         + " ratings.<br><br>"
         + "When we filter the data like this, the observation we made before appears to hold!<br><br>"
-        + "Once again, the movies in each decade are spread across the range of about 80 to 180 minutes, with only a select few falling outside of those bounds."
+        + "Once again, the movies in each decade are spread across the range of about 80 to 180 minutes, with only a select few falling outside of those bounds. "
         + "In fact, we tend to have even fewer outliers as the minimum vote threshold increases, suggesting that movies in this range are more popular (among IMDb users, at least).<br><br>"
         + "Perhaps we could not reach a conclusion on whether movie quality (as measured by user ratings) has changed over time, but when it comes to runtime, we can say confidently that "
         + "runtimes of popular movies have not had any noticeable upward or downward trends over the decades!<br><br>"

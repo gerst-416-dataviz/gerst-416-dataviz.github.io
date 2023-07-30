@@ -247,10 +247,10 @@ function graphPhase3() {
     newText.innerHTML = "Here, we've filtered to include only movies with at least " + PHASE3_MIN_VOTES.toLocaleString()
         + " ratings on IMDb, which now leaves us with " + data.length.toLocaleString() + " entries.<br><br>"
         + "The concerning trend we noted before is now even more visible. Why might this happen?<br><br>"
-        + "Well, it makes sense intuitively. Older movies like <i>Peter Pan</i> (1924) came long before the age of IMDb, and are far older than almost any user of the website. The number of new viewers of such movies pales in comparison to the number watching new films."
+        + "Well, it makes sense intuitively. Older movies like <i>Peter Pan</i> (1924) came long before the age of IMDb, and are far older than almost any user of the website. The number of new viewers of such movies pales in comparison to the number watching new films. "
         + "This holds especially true for movies like <i>Invasion of the Neptune Men</i> (1961), with an average user rating of only 2.1/10.<br><br>"
         + "Notably, the old movies that have many reviews tend to be only classics like <i>It's a Wonderful Life</i> (1946) and <i>A Clockwork Orange</i> (1971), whereas movies from the past couple decades like <i>Fifty Shades of Grey</i> (2015) can receive more than 300,000 ratings despite abysmal scores.<br><br>"
-        + "Sadly, it would seem that we've reached a dead end; IMDb has such a recency bias in terms of number of ratings that it makes it impossible to draw meaningful comparisons across the years.<br><br>"
+        + "Sadly, it would seem that we've reached a dead end; IMDb has such a recency bias in terms of number of ratings that it makes it nearly impossible to draw meaningful comparisons across the years.<br><br>"
         + "What if we try looking at runtime instead of ratings?";
 
     newText.style.opacity = 0;
