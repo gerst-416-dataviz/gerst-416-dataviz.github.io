@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="explore.css"/>
+    <title>Movies Across the Decades</title>
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" integrity="sha512-M7nHCiNUOwFt6Us3r8alutZLm9qMt4s9951uo8jqO4UwJ1hziseL6O3ndFyigx6+LREfZqnhHxYjKRJ8ZQ69DQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js" integrity="sha512-iBAeBWWWFb8HqSBcrqcz98iIpuVH1la39dEYHtyQ/pGpeCQTQVvLJOWAuhv2Q7JSHp9k7hWA7sGxU3hHJe+tFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="explore.js"></script>
+
+<header>CS416 Data Visualization - "Movies Across the Decades" - William Gerst, Summer 2023</header>
+
+<div id="main">
+
+<center id="centered">
+
+<div id="graph"></div>
+<div id="graph2"></div>
+
+<div id="explainBox1">
+    <span style="font-weight: bold">Choose your own filters below!</span>
+    <span>Minimum Number of User Ratings: <input type="number" id="minVotes" value=50000></input></span>
+    
+    <span>Genres:
+    <ul id="genreList">
+    </ul>
+    </span>
+    <button class="continueButton" onclick="renderGraphs()">Submit</button>
+</div>
+
+</center>
+
+<div id="tooltip">
+    <div id="tooltipTitle">Title</div>
+    <div id="tooltipContents">Contents</div>
+</div>
+
+</div>
+
+<footer>Made with <a href="https://d3js.org/">D3</a> and <a href="https://d3-annotation.susielu.com/">D3-Annotations</a>. Uses data from <a href="https://developer.imdb.com/non-commercial-datasets/">IMDb non-commercial datasets</a>. <i>This is intended to be viewed on desktop with a high-resolution display.</i></footer>

@@ -22,6 +22,7 @@ for line in lines2:
 
 print("maxVotes = " + str(maxVotes))
 
+genres = set()
 minRuntime = 1000
 maxRuntime = 0
 with open("mergedData.tsv", "w", encoding="utf-8") as file:
@@ -41,7 +42,10 @@ with open("mergedData.tsv", "w", encoding="utf-8") as file:
                     if rm != "runtimeMinutes":
                         minRuntime = min(minRuntime, int(rm))
                         maxRuntime = max(maxRuntime, int(rm))
+                    if gen != "genres":
+                        genres.update(gen.split(","))
 print("minRuntime = " + str(minRuntime))
 print("minRuntime = " + str(maxRuntime))
+print("genres = " + str(genres))
 
 print("Finished writing new file.")

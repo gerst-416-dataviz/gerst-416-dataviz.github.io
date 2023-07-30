@@ -34,9 +34,6 @@ header {
     box-sizing: border-box;
 }
 
-footer {
-}
-
 .niceButton {
     font-size: 3em;
     padding: .5em;
@@ -58,4 +55,9 @@ footer {
 
 button {
     cursor: pointer;
+    user-select: none;
+}
+
+button:hover {
+    filter: brightness(.9);
 }

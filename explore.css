@@ -1,0 +1,57 @@
+
+#explainBox1 {
+    text-align: left;
+    padding: 1em;
+    min-height: 0;
+}
+
+#explainBox1 > * {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.continueButton {
+    margin: auto;
+    border-radius: .5em;
+    font-size: 1.5em;
+    border: none;
+    padding: .5em;
+}
+
+center {
+    display: flex;
+    height: 100%;
+}
+
+#main {
+    height: 88vh;
+}
+
+#tooltip {
+    display: none;
+    position: absolute;
+    background-color: white;
+    color: navy;
+    border: 1px solid navy;
+    padding: .35em;
+    line-height: 1.4em;
+}
+
+#tooltipTitle {
+    border-bottom: 1px solid navy;
+    margin-bottom: .35em;
+    font-weight: bold;
+}
+
+ul {
+    margin: .5em;
+    columns: 2;
+    user-select: none;
+}
+
+ul * {
+    margin: .4em;
+    cursor: pointer;
+}
+
+

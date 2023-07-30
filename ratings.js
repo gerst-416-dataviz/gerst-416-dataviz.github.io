@@ -127,6 +127,11 @@ function showGraph() {
             //.style("opacity", 1);
             .attr("r", d => rad(d.numVotes))
         svg.append("g").call(makeAnnotations)
+            .style("opacity", 0)
+            .transition()
+            .delay(2000)
+            .duration(1000)
+            .style("opacity", 1);
     });
 }
 
@@ -136,7 +141,7 @@ function graphPhase2() {
     var expBox = document.getElementById("explainBox1");
     expBox.removeChild(contButton);
 
-    data = ALL_DATA.filter(d => d.numVotes >= PHASE2_MIN_VOTES);
+    data = ALL_DATA.filter(d => parseInt(d.numVotes) >= PHASE2_MIN_VOTES);
 
     console.log(data.length);
 
@@ -234,7 +239,7 @@ function graphPhase3() {
     var expBox = document.getElementById("explainBox1");
     expBox.removeChild(contButton);
 
-    data = ALL_DATA.filter(d => d.numVotes >= PHASE3_MIN_VOTES);
+    data = ALL_DATA.filter(d => parseInt(d.numVotes) >= PHASE3_MIN_VOTES);
 
     console.log(data.length);
 

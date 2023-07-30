@@ -19,10 +19,6 @@
     padding: .5em;
 }
 
-.continueButton:hover {
-    filter: brightness(.9)
-}
-
 center {
     display: flex;
     height: 100%;
